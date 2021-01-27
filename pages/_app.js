@@ -1,3 +1,5 @@
+import React from 'react'
+import Head from 'next/head'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import db from '../db.json';
 
@@ -28,10 +30,16 @@ const GlobalStyle = createGlobalStyle`
 const theme = db.theme;
 
 export default function App({ Component, pageProps }) {
+   
   return (
     <>
+     {/* essa propriedade define globalmente que a letra sera esse abaixo */}
       <ThemeProvider theme={theme}>
         <GlobalStyle />
+        <Head>
+        <link rel = "preconnect" href = "https://fonts.gstatic.com"/>
+<link href = "https://fonts.googleapis.com/css2? family = Potta + One & display = swap" rel = "folha de estilo"/>
+      </Head>
         <Component {...pageProps} />
       </ThemeProvider>
     </>

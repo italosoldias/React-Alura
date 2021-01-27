@@ -23,6 +23,8 @@ const RetangulosDoQuiz = styled.div`
   }
 `;
 
+
+// cabeçalho do quiz
 RetangulosDoQuiz.Header = styled.header`
   display: flex;
   justify-content: flex-start;
@@ -34,7 +36,7 @@ RetangulosDoQuiz.Header = styled.header`
     margin: 0;
   }
 `;
-
+// conteudo do retangulo
 RetangulosDoQuiz.Content = styled.div`
   padding: 24px 32px 32px 32px;
   & > *:first-child {

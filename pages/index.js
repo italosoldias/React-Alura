@@ -1,13 +1,17 @@
+import React from 'react'
 import { Children } from 'react'
 import styled from 'styled-components'
-import db from '../db.json'
+import Head from 'next/head'
+import { useRouter } from  'next/router'
 
-
+ import db from '../db.json'
 import RetangulosDoQuiz from '../src/componentes/retangulo/retangulo.js'
 import FundoDoQuiz from '../src/componentes/FundoTela/fundoDoQuiz.js'
+import QuizLogo from '../src/componentes/Quizlogo/logo.js';
 
 import Footer from '../src/componentes/Footer/index.js'
-import GitHubCorner from '../src/componentes/GithubCorner/index.js';
+import GitHubCorner from '../src/componentes/GithubCorner/index.js'
+
 
 // const BackgroundImage = styled.div ` 
 // background-image: url(${db.bg});
@@ -39,22 +43,42 @@ export const QuizContainer = styled.div`
 `;
 
 export default function Home() {
-
+  
+  const router = useRouter();
+  const [name, setName] = React.useState('');
   return(
     <FundoDoQuiz backgroundImage= {db.bg}>
+     <Head> <title> Quiz do Pokemon </title> </Head>
      <QuizContainer>
-
+      <QuizLogo/>
+      
        <RetangulosDoQuiz>
 
          {/* esse abaixo é o cabeçalho do quiz */}
          <RetangulosDoQuiz.Header>
-
-     <h1> Pokemon</h1>
+           <h1> Pokemon</h1>
          </RetangulosDoQuiz.Header>
 
          {/* esse abaixo é o conteudo do retangulo */}
          <RetangulosDoQuiz.Content>
-        <p>lorem bla bla bla</p>
+
+       <form onSubmit= {function (primeiroEvento) {
+         primeiroEvento.preventDefault();
+          // não precisa colocar a extenção do arquivo
+          router.push (`/quiz?name=${name}`);
+       }}
+       >
+         <input
+          onChange = {function(primeiroEvento){
+          //  name =  primeiroEvento.target.value;
+          setName(primeiroEvento.target.value);
+          }}
+          placeholder = "conta ai pra mim" />
+        <button type ="submit" disabled={name.length === 0 }>
+         Jogar! 
+         {name}
+       </button>
+       </form>
          </RetangulosDoQuiz.Content>
        </RetangulosDoQuiz>
       
