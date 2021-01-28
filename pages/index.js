@@ -3,14 +3,16 @@ import { Children } from 'react'
 import styled from 'styled-components'
 import Head from 'next/head'
 import { useRouter } from  'next/router'
-
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
  import db from '../db.json'
+import Input from '../src/componentes/Input/input.js'
+import Button from '../src/componentes/Buttton/button.js'
 import RetangulosDoQuiz from '../src/componentes/retangulo/retangulo.js'
 import FundoDoQuiz from '../src/componentes/FundoTela/fundoDoQuiz.js'
 import QuizLogo from '../src/componentes/Quizlogo/logo.js';
-
 import Footer from '../src/componentes/Footer/index.js'
 import GitHubCorner from '../src/componentes/GithubCorner/index.js'
+import QuizContainer from '../src/componentes/Quizcontainer/quizcontainer.js';
 
 
 // const BackgroundImage = styled.div ` 
@@ -31,16 +33,7 @@ import GitHubCorner from '../src/componentes/GithubCorner/index.js'
 //     }  
 //  `;
 
-export const QuizContainer = styled.div`
-  width: 100%;
-  max-width: 350px;
-  padding-top: 45px;
-  margin: auto 10%;
-  @media screen and (max-width: 500px) {
-    margin: auto;
-    padding: 15px;
-  }
-`;
+
 
 export default function Home() {
   
@@ -61,23 +54,25 @@ export default function Home() {
 
          {/* esse abaixo é o conteudo do retangulo */}
          <RetangulosDoQuiz.Content>
-
+          
        <form onSubmit= {function (primeiroEvento) {
          primeiroEvento.preventDefault();
-          // não precisa colocar a extenção do arquivo
-          router.push (`/quiz?name=${name}`);
-       }}
-       >
-         <input
+         // não precisa colocar a extenção do arquivo
+         router.push (`/quiz?name=${name}`);
+        }}
+        >
+         <Input
+          name = " nome do usuario "
           onChange = {function(primeiroEvento){
-          //  name =  primeiroEvento.target.value;
-          setName(primeiroEvento.target.value);
+            //  name =  primeiroEvento.target.value;
+            setName(primeiroEvento.target.value);
           }}
-          placeholder = "conta ai pra mim" />
-        <button type ="submit" disabled={name.length === 0 }>
-         Jogar! 
-         {name}
-       </button>
+          placeholder = "conta ai pra mim"
+          value= {name} 
+          />
+        <Button type ="submit" disabled={name.length === 0 }>
+         {`Jogar! ${name}`}
+       </Button>
        </form>
          </RetangulosDoQuiz.Content>
        </RetangulosDoQuiz>

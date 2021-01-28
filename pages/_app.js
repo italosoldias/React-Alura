@@ -38,7 +38,7 @@ export default function App({ Component, pageProps }) {
         <GlobalStyle />
         <Head>
         <link rel = "preconnect" href = "https://fonts.gstatic.com"/>
-<link href = "https://fonts.googleapis.com/css2? family = Potta + One & display = swap" rel = "folha de estilo"/>
+        <link href = "https://fonts.googleapis.com/css2? family = Potta + One & display = swap" rel = "folha de estilo"/>
       </Head>
         <Component {...pageProps} />
       </ThemeProvider>
