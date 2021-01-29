@@ -24,7 +24,13 @@ function CarregamentoRetanguloDoQuiz(){
         </RetangulosDoQuiz>
     );
 }
-function QuezitoDoRetangulo ( { quezito, totalQuestion, indiceQuestion } ){
+function QuezitoDoRetangulo ( { 
+    quezito, 
+    totalQuestion,
+    indiceQuestion, 
+    onSubmit,
+} ){
+    const quezitoID = `quezito__${indiceQuestion}`;
     return (
         <RetangulosDoQuiz>
                     <RetangulosDoQuiz.Header>
@@ -49,36 +55,77 @@ function QuezitoDoRetangulo ( { quezito, totalQuestion, indiceQuestion } ){
                         <p>
                         {quezito.description} 
                         </p>
-                      <form>
+                      <form 
+                        onSubmit= {( informacoesDoEvento ) =>{
+                            informacoesDoEvento.proventDefault();
+                            onSubmit();
+                      }}>
                           
                         {quezito.alternatives.map((questao, indiceQuestion) => {
                             const questaoId = `questao ${indiceQuestion}`;
                             return (
-                                <label 
+                                <RetangulosDoQuiz.Topic 
+                                    as = "label"
                                     htmlFor={questaoId}
                                 >
-                                    {questao}
                                     <input
+                                        style = {{ display: 'none'}} 
                                         id = {questaoId}
-                                    />
-                                </label>
+                                        name= {quezitoID}
+                                        type= "radio"
+                                        />
+                                {questao}
+                                </RetangulosDoQuiz.Topic>
                             );
                         })}
-                        </form>  
 
-                        <Button>
+                        <Button type= "submit">
                             clica ai arrombado 
                         </Button>
+                        </form>  
                     </RetangulosDoQuiz.Content>
                  </RetangulosDoQuiz>
     );
 }
-
-export default function PaquinaDoQuiz () {
+const estadosDeCarregamentos = {
+    CARREGANDO : `CARREGANDO...` ,
+    PERGUNTAS : `PERGUNTAS`,
+    RESULTADO : `RESULTADO`
+};
+export default function PaginadoQuiz () {
     const router = useRouter() ;
+   
+    // const estadoDeCarregamento = estadosDeCarregamentos.CARREGANDO;
+    const [estadoDeCarregamento, setEstadoDeCarregamento] = React.useState (estadosDeCarregamentos.CARREGANDO);
     const totalQuestion = db.questions.length;
-    const indiceQuestion = 1;
+    const [ perguntaExibida, setPerguntaExibida] = React.useState (1);
+    const indiceQuestion = perguntaExibida;
     const quezito = db.questions[indiceQuestion];
+    //  o comando React.useEffect ele define o ciclo de vida de um componente
+    //  inicia ou nasce == didMount
+    // atualizando ou carregando == willUpdate
+    // morreu ou terminou == willUnmount
+    //  abaixo é definida a mudança de tela para o estado para apresentar as perguntas
+    React.useEffect (() => { 
+        setTimeout(() => {
+        
+        
+        setEstadoDeCarregamento (estadosDeCarregamentos.PERGUNTAS);
+        },10 * 100);
+    }, []);
+
+    function capituraSubmitQuiz () {
+        const proximaPergunta = indiceQuestion + 1;
+        if ( indiceQuestion < totalQuestion) {
+
+        setPerguntaExibida(indiceQuestion + 1);
+        } else {
+            setEstadoDeCarregamento(estadosDeCarregamentos.RESULTADO);
+        }
+    };
+
+
+
     return (
 
         <FundoDoQuiz backgroundImage= {db.bg}>
@@ -86,12 +133,16 @@ export default function PaquinaDoQuiz () {
             <QuizContainer>
             <QuizLogo/>
                 
-            <QuezitoDoRetangulo 
+          
+            {estadoDeCarregamento === estadosDeCarregamentos.PERGUNTAS  && (  
+                <QuezitoDoRetangulo 
                 quezito = {quezito}
                 totalQuestion = {totalQuestion} 
                 indiceQuestion = {indiceQuestion}
-            />
-            <CarregamentoRetanguloDoQuiz/> 
+                onSubmit = {capituraSubmitQuiz}
+            />)}
+            { estadoDeCarregamento === estadosDeCarregamentos.CARREGANDO &&   
+                <CarregamentoRetanguloDoQuiz/> }
             </QuizContainer>
         </FundoDoQuiz>
 
